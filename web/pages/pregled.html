@@ -1,0 +1,11 @@
+<div ng-controller="pregledController">
+  <h1>Pregled</h1>
+  <form>
+      <select ng-model="dev" name="devs" form="devicesForm">
+        <option selected disabled value="0">Uređaji</option>
+        <option ng-repeat="device in devices" value="{{device}}">{{device}}</option>
+      </select>
+      <input ng-disabled="!dev" type="button" ng-click="GetData(dev)" value="Daj" />
+  </form>
+  <p>{{ message }}</p>
+</div>
