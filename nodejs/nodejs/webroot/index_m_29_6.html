@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arduino2Node</title>
+
+<link rel="stylesheet" href="myStyle.css">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery.flot.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	$("<div id='tooltip'></div>").css({
+		position: "absolute",
+		display: "none",
+		border: "1px solid #fdd",
+		padding: "2px",
+		"background-color": "#fee",
+		opacity: 0.80
+	}).appendTo("body");
+	
+	var options = {
+			lines: {
+				show: true
+			},
+			points: {
+				show: true
+			},
+			xaxis: {
+				mode: "time",
+				timeformat: "%H:%M:%S"
+			},
+			yaxes: [{
+				position: "left",
+				min:0, max: 40,  tickSize: 5
+			},{	
+				alignTicksWithAxis: 1,
+				position: "right",
+				min:20, max: 60,  tickSize: 5
+			}],
+			grid: {
+				hoverable: true,
+			    backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+			}
+		};
+	
+	var data = {};
+	$.plot("#chart-div", data, options);
+	
+	$("#chart-div").bind("plothover", function (event, pos, item) {
+		if (item) {
+			y = item.datapoint[1].toFixed(2);
+			$("#tooltip").html(item.series.label + " = " + y)
+				.css({top: item.pageY+5, left: item.pageX+5})
+				.fadeIn(200);
+		} else {
+			$("#tooltip").hide();
+		}	
+	});
+	
+	function poller() {
+		
+		function onDataReceived(series) {
+			data = JSON.parse(series);
+			$.plot("#chart-div", [{label:"Temperature [°C]", data: data.data, yaxis: 1}, 
+			                      {label: "Humidity [%]", data: data.data1, yaxis: 2}], 
+			                      options);
+			
+		}		
+		
+		$.ajax({
+			url: "getdata",
+			type: "GET",
+			success: onDataReceived
+		});					
+	};
+	setInterval(poller, 1000);
+	poller();
+});
+
+$(function() {
+    $( "#button" ).click(function() {
+        $( "#chart-div" ).toggle();
+    });
+});
+
+</script>
+</head>
+<body>
+    <div class="container">
+  		<div class="jumbotron">
+    		<h1>Blinkup <small>Bringing IoT to people</small></h1>
+    		<p>Polling the server periodically</p>      
+	  	</div>    
+	</div>
+
+    <div class="container">
+    	<div class="row">
+    		<div class="col-md-3">
+    		</div>
+    		<div class="col-md-6">
+    			<div  id="chart-container" class="chart-container">
+    				<div id="chart-div" class="chart-div"></div>
+    			</div>
+				<input id="button" type="button" value="Toggle ON/OFF">
+    		</div>
+    		<div class="col-md-3">
+    		</div>	
+    	</div>
+    </div>	
+</body>
+</html>

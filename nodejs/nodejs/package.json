@@ -1,0 +1,9 @@
+{
+  "name": "blinkup",
+  "version": "0.0.1",
+  "description": "Minimalist IoT app",
+  "dependencies": {
+    "express": "^4.12.4",
+    "mime": "~1.3.4"
+  }
+}

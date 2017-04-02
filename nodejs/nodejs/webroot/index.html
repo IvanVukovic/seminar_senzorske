@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blinkup</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="myStyle.css">
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery.flot.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+		$("#posalji").on("click",function(){
+			$("#prvi").slideUp(function(){
+				$("#drugi").slideDown();	
+			});
+			
+		})
+
+		$("#back").on("click",function(){
+			$("#drugi").slideUp(function(){
+				$("#prvi").slideDown();	
+			});
+			
+		})
+		var bitSequence;
+		var bitBlocks;
+		var symbolSequence = [];
+		var slovo;
+		var bitSequence;
+		var bitBlocksLength;
+		var delimiter = '#000000';
+        var symbolx  = '#0101010';
+		var symbol0 = '#868686';
+		var symbol1 = '#bcbcbc';
+		var symbol2 = '#eeeeee';
+		var symbol3 = '#ffffff';
+		var canvas, ctx;
+		var requestId = 0;
+		var i = 0;	
+		var w = 0;	
+		
+		function blink() {
+
+
+		bitSequence=null;
+
+		bitSequence="1:0:"+$("#inputSSID").val()+":"+$("#inputWPApassword").val()+":::;";
+
+		
+
+
+
+
+			bitBlocks = prepareBlocks(bitSequence);
+			bitBlocksLength = bitBlocks.length; 
+
+			while(symbolSequence.length > 0)
+			{
+				symbolSequence.pop();
+			}
+            
+			symbolSequence.push(0);
+			symbolSequence.push(1);
+			symbolSequence.push(2);
+			symbolSequence.push(3);
+			
+			for (j=0; j < bitBlocksLength; j++) {
+			slovo=bitBlocks[j];
+			for (t=0; t < 4; t++) {
+
+                switch(slovo)
+                {
+
+                    case("0"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(0);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+            
+                    case("1"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(0);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("2"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(0);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+
+                    case("3"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(0);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+                        
+            
+                    case("4"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(0);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+                        
+            
+                    case("5"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(0);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+                        
+                    
+                    case("6"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(0);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+                        
+                    
+                    case("7"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(0);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+                        
+
+                    case("8"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(0);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+                        
+                    
+                    case("9"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(0);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+                        
+
+                    case("a"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+                        
+
+                    case("b"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+                        
+
+                    case("c"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+                        
+
+                    case("d"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+                        
+
+                    case("e"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+                       
+
+                    case("f"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+                        
+
+                    case("g"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+                        
+
+                    case("h"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+                        
+
+                    case("i"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        } break;
+
+                    case("j"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("k"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }  break;
+
+                    case("l"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break; 
+
+                    case("m"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+
+                    case("n"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("o"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+
+                    case("p"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+
+                    case("q"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+
+                    case("r"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("s"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+
+                    case("t"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+
+                    case("u"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+
+                    case("v"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("w"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+
+                    case("x"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+                        
+                    case("y"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+
+                    case("z"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case(" "):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+
+                    case("_"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+                        
+                    case("."):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+                        
+                    case(","):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+                        
+                    case(":"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+                        
+                    case(";"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+
+                    case("#"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(3);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+
+                    case("@"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(3);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("/"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(3);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+
+                    case("-"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(3);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+
+                    case("~"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(3);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+
+                    case("\""):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(3);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("?"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(3);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+
+                    case("!"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(3);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+
+                    case("$"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(3);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+
+                    case("%"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(3);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("&"):
+                    switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(0);break;
+                            case(1):
+                                symbolSequence.push(3);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+
+                    case("A"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+                        
+
+                    case("B"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+                        
+
+                    case("C"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+                        
+
+                    case("D"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+                        
+
+                    case("E"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+                       
+
+                    case("F"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+                        
+
+                    case("G"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+                        
+
+                    case("H"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+                        
+
+                    case("I"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        } break;
+
+                    case("J"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("K"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }  break;
+
+                    case("L"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break; 
+
+                    case("M"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+
+                    case("N"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("O"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+
+                    case("P"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(1);break;
+                            case(2):
+                                symbolSequence.push(3);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+
+                    case("Q"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+
+                    case("R"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("S"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+
+                    case("T"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(0);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+
+                    case("U"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+
+                    case("V"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+                    case("W"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(2);break;
+                        }break;
+
+                    case("X"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(1);break;
+                            case(3):
+                                symbolSequence.push(3);break;
+                        }break;
+                        
+                    case("Y"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(0);break;
+                        }break;
+
+                    case("Z"):
+                        switch(t)
+                        {
+                            case(0):
+                                symbolSequence.push(1);break;
+                            case(1):
+                                symbolSequence.push(2);break;
+                            case(2):
+                                symbolSequence.push(2);break;
+                            case(3):
+                                symbolSequence.push(1);break;
+                        }break;
+
+						
+                }
+            }
+            
+            
+            
+			}
+			
+				
+				canvas = document.getElementById("box4");
+				ctx = canvas.getContext('2d');
+				ctx.fillStyle = delimiter;
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+											
+				requestAnimationFrame(render);									
+		}
+		function prepareBlocks(sequence) {
+            return sequence.split("");
+        } 
+		var delimiterNext = false;
+		function render(stamp) {
+
+			requestId = window.requestAnimationFrame(render);		
+			
+			if (i < symbolSequence.length) {
+				if (delimiterNext) {
+					delimiterNext = false;
+					ctx.fillStyle = delimiter;
+				} else {
+					delimiterNext = true;
+					if (symbolSequence[i] == 3) {
+						ctx.fillStyle = symbol0;	
+					} else if (symbolSequence[i] == 2) {
+						ctx.fillStyle = symbol1;					
+					} else if (symbolSequence[i] == 1) {
+						ctx.fillStyle = symbol2;
+					} else if (symbolSequence[i] == 0) {
+						ctx.fillStyle = symbol3;	
+					} else if (symbolSequence[i] == 5) {
+						ctx.fillStyle = symbolx;
+					}else {
+                        ctx.fillStyle = delimiter;  
+                        delimiterNext = false;
+                    }
+					
+					// progress bar
+					w=100*((i+1)/symbolSequence.length);
+					if (w <= 100) {
+						$('#progress').css({
+							width: w + "%"
+						});
+					} else {
+						$('#progress-wrap').removeClass('visible');
+					}
+					i+=1;
+				}
+				ctx.fillRect(0, 0, canvas.width, canvas.height);					
+			} else {
+				$('#progress').css({
+					width: "0%"
+				});
+			
+				$('#progress-wrap').removeClass('visible');
+			
+				showInfo('#blinkup',{
+					title: "Finished uploading!", 
+					text: "Please remove your device from the screen and wait to be redirected."
+				}, "#chart");				
+				reset();
+			}				
+		}
+		
+		function reset() {
+			if (requestId) {
+				window.cancelAnimationFrame(requestId);
+				requestId = 0;
+			}
+
+			i = 0;
+			delimiterNext = false;	
+			ctx.fillStyle = delimiter;
+			ctx.fillRect(0, 0, canvas.width, canvas.height);			
+		}
+
+        function stop()
+        {
+            if(requestId){
+            window.cancelAnimationFrame(requestId);
+            requestId=0;
+            }
+            i = 0;
+            delimiterNext = false;  
+            ctx.fillStyle = delimiter;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+	
+	$("<div id='tooltip'></div>").css({
+		position: "absolute",
+		display: "none",
+		border: "1px solid #fdd",
+		padding: "2px",
+		backgroundColor: "#fee",
+		opacity: 0.80
+	}).appendTo("body");
+	
+	var options = {
+			lines: {
+				show: true
+			},
+			points: {
+				show: true
+			},
+			xaxis: {
+				mode: "time",
+				timeformat: "%H:%M:%S"
+			},
+			yaxes: [{
+				position: "left",
+				min:0, max: 40,  tickSize: 5 
+				
+			},{	
+				alignTicksWithAxis: 1,
+				position: "right",
+				min:0, max: 70,  tickSize: 5 
+			}],
+			grid: {
+				hoverable: true,
+			    backgroundColor: "#ffffff"
+			}
+		};
+	
+	var data = {};
+	$.plot("#chart-div", data, options);
+	
+	$("#chart-div").bind("plothover", function (event, pos, item) {
+		if (item) {
+			y = item.datapoint[1].toFixed(2);
+			$("#tooltip").html(item.series.label + " = " + y)
+				.css({top: item.pageY+5, left: item.pageX+5})
+				.fadeIn(200);
+		} else {
+			$("#tooltip").hide();
+		}	
+	});
+	
+	var POLLING_INTERVAL = 1000; // Miliseconds.
+	var TIMEOUT = 40000; // Miliseconds.
+	var pollerIntervalId;
+	var startTime;
+		
+	function poller() {
+		function onDataReceived(series) {
+			data = JSON.parse(series); // Works well in Chrome but not in Firefox!!!!
+			if (data.data.length !== 0 || data.data1.length !== 0) {
+					startTime = (new Date()).getTime();
+					$('.loader-overlay').removeClass('visible');	
+			} else if (((new Date()).getTime() - startTime) >= TIMEOUT) {
+					$('.loader-overlay').removeClass('visible');
+					showWarning('#chart',{
+						title: "Receiving no data from the sensor device!", 
+						text: "Please check the LED status on your sensor device or reload the web page."
+					});					
+					clearInterval(pollerIntervalId);
+					return;
+			} else {
+				showLoader($("#chart-container"), "Waiting for data from your device...");
+			}					
+			
+			$.plot("#chart-div", [{label:"Temperature [°C]", color: '#e3b000' , data: data.data, yaxis: 1}, 
+			                      {label: "Humidity [%]", color: '#3D9970' , data: data.data1, yaxis: 2}], 
+			                      options);
+		}		
+		
+		$.ajax({
+			url: "getdata",
+			type: "GET",
+			timeout: 1000,
+			success: function(series, status, xhr) {
+				onDataReceived(series);
+			},
+			error: function(xhr, status, error) {
+					showWarning('#chart',{
+						title: "Cannot connect to the server!", 
+						text: "Please check your internet connection and make sure that your server is up and running."
+					});	
+					$('.loader-overlay').removeClass('visible');	
+					clearInterval(pollerIntervalId);
+			}
+		});
+	};
+	
+	function showLoader(div, text) {
+		var $divLoader = div.find('.loader-overlay');
+		if ($divLoader.is('.visible')) return;
+		$divLoader.find('p').text(text);
+		$divLoader.addClass('visible');
+	}
+	
+	function showWarning (hash, msgObject) {	
+		if (hash !== location.hash) return;
+		var warning = $('.warning');
+		var warningPannel = warning.find('.warning-panel');
+		var warningClose = warningPannel.find('.myclose'); 
+		warningPannel.find('a').css( 'cursor', 'pointer' );
+		if (msgObject.title) {
+			warningPannel.find('#w-title').text(msgObject.title);
+		}			
+		if (msgObject.text) {
+			warningPannel.find('#w-text').text(msgObject.text);
+		}		
+		warningClose.one('click', function() {
+			warning.removeClass('visible');
+		});		
+		warning.addClass('visible');		
+	}
+
+	function showInfo (hash, msgObject, nextHash) {	
+		if (hash !== location.hash) return;
+		var info = $('.info');
+		var infoPannel = info.find('.info-panel');
+		if (msgObject.title) {
+			infoPannel.find('#i-title').text(msgObject.title);
+		}			
+		if (msgObject.text) {
+			infoPannel.find('#i-text').text(msgObject.text);
+		}
+		var INFO_TIMEOUT = 5;
+		var iCtr = infoPannel.find('#i-ctr');
+		iCtr.text(INFO_TIMEOUT);
+		var infoIntervalId = setInterval(function() {
+			INFO_TIMEOUT-=1;
+			iCtr.text(INFO_TIMEOUT);
+			if (INFO_TIMEOUT < 1) { 
+				info.removeClass('visible');
+				clearInterval(infoIntervalId);
+				location.hash = nextHash;
+			}
+		}, 1000);
+		info.addClass('visible');		
+	}
+	
+	function updateStep(progtrckr) {
+		var done = true;
+		$("li[id^='progtrckr'").each(function() {
+			$(this).removeClass('progtrckr-done');
+			$(this).addClass('progtrckr-todo');				
+			if ($(this).is(progtrckr)) {
+				$(this).addClass('progtrckr-done');
+				$(this).removeClass('progtrckr-todo');				
+			}
+		});		
+	}
+	
+	function renderConfigPage(){
+		location.hash = '';
+		clearInterval(pollerIntervalId);
+		$('.page').removeClass('visible');
+		$('.page').addClass('visuallyhidden');
+		$('.config').addClass('visible');
+		setTimeout(function () {
+			$('.config').removeClass('visuallyhidden');
+		}, 20);		
+		
+		updateStep('#progtrckrConfig');
+
+	}
+	
+	function renderBlinkupPage(){
+		clearInterval(pollerIntervalId);
+		$('.page').removeClass('visible');
+		$('.page').addClass('visuallyhidden');		
+		$('.blinkup').addClass('visible');		
+		
+		setTimeout(function () {
+			$('.blinkup').removeClass('visuallyhidden');
+		}, 20);
+		
+		$('#progres-wrap').addClass('visible');
+		
+		updateStep('#progtrckrBlink');
+	}
+	
+	function renderChartPage(){
+		$('.page').removeClass('visible');
+		$('.page').addClass('visuallyhidden');		
+		$('.chart').addClass('visible');
+		setTimeout(function () {
+			$('.chart').removeClass('visuallyhidden');
+		}, 20);
+		$('#chart-div').addClass('visible');
+
+		updateStep('#progtrckrChart');
+		
+		startTime = (new Date()).getTime();
+		pollerIntervalId = setInterval(poller, POLLING_INTERVAL);
+		poller();		
+	}
+	
+	function locationHashChanged() {	
+		if (location.hash === '' || location.hash === '#config') {
+			renderConfigPage();
+		} else if (location.hash === '#blinkup') {
+			renderBlinkupPage();
+		} else if (location.hash === '#chart') {
+			renderChartPage();
+		}
+	}
+	
+	$('#configNextBtn').click(function(e) {
+		e.preventDefault();
+		location.hash = '#blinkup';
+	});
+
+	$('#inputSSID').keyup(function(e) {
+		if ($(this).val().trim()) {
+			$('#configNextBtn').removeClass('disabled');
+		} else {
+			$('#configNextBtn').addClass('disabled');
+		}
+	});
+	
+	$(document).keydown(function(e) {
+		if (e.keyCode === 13 && location.hash === "#blinkup") {
+			blink();
+		}
+	});
+	
+	$(window).bind( 'hashchange', function() {
+		locationHashChanged();	
+	});
+	
+	renderConfigPage();
+	
+	
+
+});
+</script>
+</head>
+<body>
+<div id="global-wrap">
+	<div id="header-wrap" class="w-block">
+		<header id="header">
+			<h1 class="title">Blinkup <small>Bringing IoT to the people</small></h1>
+		</header>
+		<div id="progtrckr">
+			<ul class="progtrckr" data-progtrckr-steps="3"-->
+				<li id="progtrckrConfig" class="progtrckr-done"><a href="#config">Configuration</a></li><!--
+				--><li id="progtrckrBlink" class="progtrckr-todo"><a href="#blinkup">Upload</a></li><!--
+				--><li id="progtrckrChart" class="progtrckr-todo"><a href="#chart">Sensor readings</a></li>
+			</ul>
+		</div>		
+	</div>	
+	<div id="main" class="w-block">   
+		<div id="progres-wrap" class="page">
+			<div id="progress-bar">
+				<div id="progress"></div>	
+			</div>
+		</div>	
+		<div class="config page cont">
+			<div class="panel">
+				<div class="panel-heading">
+					<h4>Please enter your Configuration data</h4> 
+				</div>
+				<div class="panel-body">
+				<form>
+				  <div class="form-group">
+					<label>WiFi network</label>
+					<input class="form-control" id="inputSSID" placeholder="SSID">
+				  </div>
+				  <div class="form-group">
+					<label >WiFi password</label>
+					<input type="password" class="form-control" id="inputWPApassword" placeholder="Password">
+				  </div>
+				  <!--div class="form-group">
+					<label>Server</label>
+					<input class="form-control" id="inputServerName" placeholder="Server name">
+				  </div-->
+				  <button id="configNextBtn" class="btn pull-right customBtn btn-success disabled">Next step</button>
+				</form>			
+				</div>
+			</div>
+		</div>	
+		
+		<div class="blinkup  page">
+			<div class="panel">
+				<div class="panel-heading">
+					<h4>Power ON your device, place it over the marked area and hit ENTER.</h4> 
+				</div>
+				<div class="box1">
+					<div class="box2"></div>
+					<div class="box3"></div>
+					<canvas id="box4" class="box4"></canvas>
+					<!--div class="box4"></div-->
+				</div>
+			</div>		
+		</div>		
+		
+		<div class="chart  page">
+			<div id="chart-container">
+				<div id="chart-div"></div>
+				<div class="loader-overlay">
+					<div class="loader">
+						<div class="spinner"></div>
+						<p></p>
+					</div>
+				</div>
+			</div>	
+		</div>
+		
+		<div class="warning page">
+			<div class="warning-panel">
+				<a class="myclose">×</a>
+				<h3 id="w-title"></h3>
+				<p id="w-text"></p>
+			</div>
+		</div>
+		
+		<div class="info page">
+			<div class="info-panel">
+				<h3 id="i-title"></h3>
+				<p id="i-text"></p>
+				<p id="i-ctr"></p>
+			</div>
+		</div>		
+	</div>	
+</div>	
+</body>
+</html>

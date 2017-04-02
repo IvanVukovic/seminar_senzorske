@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arduino2Node</title>
+
+<link rel="stylesheet" href="myStyle.css">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery.flot.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var options = {
+			lines: {
+				show: true
+			},
+			points: {
+				show: true
+			},
+			xaxis: {
+				mode: "time",
+				timeformat: "%H:%M:%S"
+			}
+		};
+	
+	var data = {};
+	$.plot("#chart-div", data, options);
+	
+	function poller() {
+		
+		function onDataReceived(series) {
+			data = JSON.parse(series);
+			$.plot("#chart-div", [{label:" Temperature [°C]", data: data.data}, 
+			                      {label: "Humidity [%]", data: data.data1}], 
+			                      options);
+			console.log(data);
+		}		
+		
+		$.ajax({
+			url: "getdata",
+			type: "GET",
+			success: onDataReceived
+		});					
+	};
+	setInterval(poller, 1000);
+	poller();
+});
+</script>
+</head>
+<body>
+    <div class="container">
+  		<div class="jumbotron">
+    		<h1>Blinkup <small>Bringing IoT to people</small></h1>
+    		<p>Polling the server periodically</p>      
+	  	</div>    
+	</div>
+
+    <div class="container">
+    	<div class="row">
+    		<div class="col-md-3">
+    		</div>
+    		<div class="col-md-6">
+    			<div class="chart-container">
+    				<div id="chart-div" class="chart-div"></div>
+    			</div>
+    		</div>
+    		<div class="col-md-3">
+    		</div>	
+    	</div>
+    </div>
+</body>
+</html>

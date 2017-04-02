@@ -1,0 +1,12 @@
+<div class="jumbotron text-center" ng-controller="pregledController">
+  <h1>Pregled</h1>
+  <form>
+      <select ng-options="device for device in devices" ng-model="selectedDevice" ng-change="Graph(selectedDevice, selectedCount)"></select>
+      <select ng-options="count for count in counts" ng-model="selectedCount" ng-change="Graph(selectedDevice, selectedCount)"></select>
+  </form>
+  <!-- <p>{{ data }}</p> -->
+</div>
+<div ng-controller="chartController">
+  <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-colors="colours"
+    chart-series="series" chart-click="onClick"></canvas>
+</div>

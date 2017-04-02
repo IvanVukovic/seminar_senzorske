@@ -1,0 +1,106 @@
+/**
+ * 
+ */
+var http = require("http"),
+	url = require("url"),
+	path = require("path"),
+	fs = require("fs"),
+	mime = require("mime"),
+	express = require("express");
+
+var app = express();
+var router = express.Router();
+
+var data = [];
+var data_length = 5;
+
+var handle = {};
+var cache = {};
+
+function sendFile(fileName, response) {	
+	var absPath = __dirname + fileName;
+	if (cache[absPath]) {
+		response.setHeader("Content-Type", mime.lookup(absPath));
+		response.writeHead(200);
+		response.end(cache[absPath]);
+		console.log(fileName + "sent from cache");
+	} else {
+		fs.readFile(absPath, function(err, contents) {
+			if (!err) {
+				cache[absPath] = contents;
+				response.setHeader("Content-Type", mime.lookup(absPath));
+				response.writeHead(200);
+				response.end(contents);
+				console.log(fileName + " sent from disk");
+			} else {
+				response.writeHead(404, {'Content-Type': 'text/html'});
+				response.end('<h2>Sorry, the page you are looking for cannot be found.</h2>');
+				console.log(err);
+			}
+		});
+	}
+}
+
+function updatedata(request, response) {
+	var queryObject = url.parse(request.url,true).query;
+	if (queryObject.data) {				
+		if (data.length > data_length) {		
+			data.shift();			
+		}
+		var value = parseFloat(queryObject.data.replace(/[^-.0-9]/g, ''));
+		data.push([(new Date().getTime()), Number.isFinite(value)?value:0]);
+		console.log(data);
+	}	
+	response.end();
+}
+
+function getdata(request, response) {
+	response.end(JSON.stringify(data));
+}
+
+function route(request, response) {
+	var pathname = url.parse(request.url).pathname;
+	console.log("Request for: " + pathname);
+	
+	if (pathname === "/") {
+		sendFile("/webroot/index.html", response);
+	} else if (typeof handle[pathname] === 'function') {
+		handle[pathname](request, response);
+	} else if (pathname.indexOf("..") === -1 ) {
+		sendFile("/webroot" + pathname, response);
+	} else {
+		response.writeHead(404, {'Content-Type': 'text/html'});
+		response.end('<h2>Sorry, the page you are looking for cannot be found.</h2>');
+		console.log("No request handler defined for " + pathname);
+	}	
+}
+
+handle["/updatedata"] = updatedata;
+handle["/getdata"] = getdata;
+
+
+router.use(function(request, response, next){
+	console.log(request.method, request.url);
+	next();
+});
+
+app.use(router);
+app.use(express.static('webroot'));
+
+router.get("/", function(request, response) {
+	sendFile("/webroot/index.html", response);
+});
+
+router.get("/updatedata", function(request, response) {
+	updatedata(request, response);
+});
+
+router.get("/getdata", function(request, response) {
+	getdata(request, response);
+});
+
+//http.createServer(function(request,response){		
+//	route(request, response);
+//}).listen(8080);
+http.createServer(app).listen(8080);
+console.log("Server Running on 8080"); 
