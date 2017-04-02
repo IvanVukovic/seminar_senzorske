@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <div class="jumbotron text-center" ng-controller="pregledController">
   <h1>Pregled</h1>
   <form>
@@ -11,16 +10,3 @@
   <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-colors="colours"
     chart-series="series" chart-click="onClick"></canvas>
 </div>
-=======
-<div ng-controller="pregledController">
-  <h1>Pregled</h1>
-  <form>
-      <select ng-model="dev" name="devs" form="devicesForm">
-        <option selected disabled value="0">Uređaji</option>
-        <option ng-repeat="device in devices" value="{{device}}">{{device}}</option>
-      </select>
-      <input ng-disabled="!dev" type="button" ng-click="GetData(dev)" value="Daj" />
-  </form>
-  <p>{{ message }}</p>
-</div>
->>>>>>> fe02c0c98016c73a4790bacd10a3176c0ee23f60

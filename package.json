@@ -2,14 +2,8 @@
   "name": "projekt",
   "version": "1.0.0",
   "description": "",
-<<<<<<< HEAD
-  "main": "",
-  "dependencies": {
-    "angular": "",
-=======
   "main": "listeners.js",
   "dependencies": {
->>>>>>> fe02c0c98016c73a4790bacd10a3176c0ee23f60
     "angular-chart.js": "^1.1.1",
     "angular_d3": "^0.1.1",
     "body-parser": "^1.17.1",
