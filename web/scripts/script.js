@@ -16,6 +16,11 @@
             .when('/pregled', {
               templateUrl : 'pages/pregled.html',
               controller  : 'pregledController'
+            })
+
+            .when('/pit', {
+              templateUrl: 'pages/pit.html',
+              controller : 'pitController'
             });
     });
 
@@ -25,43 +30,54 @@
         $scope.message = 'Everyone come and see how good I look!';
     });
 
-    myApp.controller('pregledController', function($scope, $http, $interval, graphDataService) {
+    myApp.controller('pregledController', function($scope, $http, $interval, graphDataService, dbService) {
       var promise = undefined;
       $http.get("/getDevices/").then(function(res){
-        console.log(res.data);
-        $scope.devices = res.data.split(",").sort();
+        dbService.setDevices(res.data.split(",").sort());
+        $scope.devices = dbService.getDevices();
         $scope.selectedDevice = $scope.devices[0];
-        $scope.counts = [10, 20, 50, 100, 500];
-        console.log($scope.devices);
+        $scope.counts = [10, 20, 50, 100];
       })
 
       $scope.GetData = function(Device, count){
           //tribalo bi nacrtat graf
           $http.get("/getValues/?name=" + Device + "&count=" + count).then(function(response){
             $scope.data = response.data;
-            console.log(response.data);
-            var values = [];
-            var timestamp = [];
-            response.data.forEach(function(object){
-              values.push(parseFloat(object.value));
-              timestamp.push(object.date);
-            });
-            graphDataService.setValues(values, timestamp);
+            if(response.data.length > 0){
+              $scope.info = undefined;
+              var values = [];
+              var timestamp = [];
+              response.data.forEach(function(object){
+                values.push(parseFloat(object.value));
+                timestamp.push(object.date);
+              });
+              graphDataService.setValues(values, timestamp);
+            }
+            else{
+              $scope.info = 'Nema podataka, provjeri upite!';
+            }
           });
           //check for new devices in db
           $http.get("/getDevices/").then(function(res){
-            $scope.devices = res.data.split(",").sort();
+            dbService.setDevices(res.data.split(",").sort());            
+            $scope.devices = dbService.getDevices();
           })
       };
 
       $scope.Graph = function(device, count){
+        stopInterval();
+        promise = $interval(function(){$scope.GetData(device, count)}, 2000, false, [device, count]);
+        //sad triba nacrtat
+      }
+
+      var stopInterval = function(){
         if(angular.isDefined(promise)){
           $interval.cancel(promise);
           promise = undefined;
         }
-        promise = $interval(function(){$scope.GetData(device, count)}, 2000, false, [device, count]);
-        //sad triba nacrtat
       }
+
+      $scope.$on('$destroy', function(){stopInterval();});
 
     });
 
@@ -69,8 +85,8 @@
       var promise = undefined;
       $scope.series = ['Series A'];
       $scope.colours = ['#1e90ff', '#3498DB', '#717984', '#F1C40F'];
-      console.log("chart controller " + graphDataService.getValues()[0]);
       $scope.options = {
+        animation: false,
         scales: {
           yAxes: [
             {
@@ -78,41 +94,26 @@
               type: 'linear',
               display: true,
               position: 'left'
-            },
-            {
-              id: 'y-axis-2',
-              type: 'linear',
-              display: true,
-              position: 'right'
             }
           ]
         }
       };
-      $scope.onClick = function (points, evt) {
-        console.log(points, evt);
-      };
 
-      $interval(function () {
-        $scope.data = [graphDataService.getValues()[0].reverse()]; //data must be in double array for hover to work
-        $scope.labels = graphDataService.getValues()[1].reverse();
+      promise = $interval(function () {
+        if(angular.isDefined(graphDataService.getValues())){
+          $scope.data = [graphDataService.getValues()[0].reverse()]; //data must be in double array for hover to work
+          $scope.labels = graphDataService.getValues()[1].reverse();
+        }
       }, 3000);
+
+      var stopInterval = function(){
+        if(angular.isDefined(promise)){
+          $interval.cancel(promise);
+          promise = undefined;
+        }
+      }
+      $scope.$on('$destroy', function(){
+        stopInterval();
+        graphDataService.clear();
       });
-
-
-    myApp.service('graphDataService', function(){
-      var data = [];
-
-      var setValues = function(datar, timestampr){
-        data = [datar, timestampr];
-        console.log("Service " + data[0]);
-      }
-
-      var getValues = function(){
-        return data;
-      }
-
-      return{
-        setValues: setValues,
-        getValues: getValues
-      };
     });

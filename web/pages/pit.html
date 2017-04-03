@@ -1,0 +1,8 @@
+<!-- about.html -->
+    <div class="jumbotron text-center" ng-controller="pitController">
+        <h1>Podatci i tablice</h1>
+        <form>
+            <select ng-options="device for device in devices" ng-model="selectedDevice"></select>
+            <button ng-show="selectedDevice" ng-click="dropDevice()">Izbriši</button>
+        </form>
+    </div>

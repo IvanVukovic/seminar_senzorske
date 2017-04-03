@@ -22,7 +22,6 @@ router.use(function(request, response, next){
 	next();
 });
 
-
 router.get('/addDevice/', function (req, res) {
    req.query.date = new Date().toISOString();
    // Use connect method to connect to the Server
@@ -58,26 +57,41 @@ router.get('/getValues/', function (req, res) {
   });
 })
 
-router.checkDevices = function(){
+router.get('/dropCollection', function(req, res){
+  MongoClient.connect(url, function (err, db) {
+    if (err) {
+      res.end("nok");
+      console.log('Unable to connect to the mongoDB server. Error:', err);
+    } else {
+      console.log('Connection established to', url);
+      if(db.collection(req.query.name).drop()){
+        RemoveFromDevices(req.query.name);
+        res.end("ok");
+      }
+      else {
+        res.end("nok!");
+      }
+      db.close();
+    }
+  });
+})
 
+router.checkDevices = function(){
   MongoClient.connect(url, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongoDB server. Error:', err);
     } else {
       console.log('Connection established to', url);
       db.collections(function (err, collections) {
-        //console.log(collections);
         collections.forEach(function(collection){
           devices.push(collection.s.name);
         })
-
         console.log(devices);
         });
       db.close();
     }
   });
-
-  }
+}
 
 var UpdateData = function(db, req) {
   var collection = db.collection(req.query.name);
@@ -90,5 +104,13 @@ var AddDeviceToArray = function(device){
       if(devices[i] == device) bool = 1;
   }
   if(bool == 0)devices.push(device);
+}
+
+var RemoveFromDevices = function(device){
+  for(var i = 0; i < devices.length;i++){
+    if(devices[i] == device){
+      devices.splice(i,1);
+    }
+  }
 }
 module.exports = router

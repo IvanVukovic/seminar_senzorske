@@ -4,16 +4,18 @@
     <head>
       <!-- SCROLLS -->
       <!-- load bootstrap and fontawesome via CDN -->
-      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
-      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
+      <link rel="stylesheet" href="css/bootstrap/3.0.0/bootstrap.min.css" />
+      <link rel="stylesheet" href="css/font-awesome/4.0.0/css/font-awesome.css" />
       <link rel="stylesheet" href="/css/graf.css" />
       <!-- SPELLS -->
       <!-- load angular and angular route via CDN -->
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.js"></script>
-      <script src="https://cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
-      <script src="script.js"></script>
+      <script src="scripts/angularjs/1.5.7/angular.min.js"></script>
+      <script src="scripts/angularjs/1.5.7/angular-route.js"></script>
+      <script src="scripts/angularjs/chart/Chart.bundle.js"></script>
+      <script src="scripts/angularjs/chart/angular-chart.min.js"></script>
+      <script src="scripts/script.js"></script>
+      <script src="scripts/pitController.js"></script>
+      <script src="scripts/service.js"></script>
     </head>
     <body ng-controller="mainController">
 
@@ -28,6 +30,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
                     <li><a href="#pregled"><i class="fa fa-comment"></i> Pregled</a></li>
+                    <li><a href="#pit"><i class="fa fa-comment"></i>Podatci i tablice</a></li>
                 </ul>
             </div>
             </nav>
