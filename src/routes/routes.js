@@ -8,7 +8,7 @@ var devices = [];
 
 // middleware that is specific to this router
 router.use(function timeLog (req, res, next) {
-  console.log('Time: ', Date.now())
+  console.log('Time: ', new Date().toISOString());
   next()
 })
 
@@ -22,7 +22,7 @@ router.use(function(request, response, next){
 	next();
 });
 
-router.get('/addDevice/', function (req, res) {
+router.get('/addValue/', function (req, res) {
    req.query.date = new Date().toISOString();
    // Use connect method to connect to the Server
    MongoClient.connect(url, function (err, db) {

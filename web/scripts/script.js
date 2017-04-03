@@ -36,7 +36,7 @@
         dbService.setDevices(res.data.split(",").sort());
         $scope.devices = dbService.getDevices();
         $scope.selectedDevice = $scope.devices[0];
-        $scope.counts = [10, 20, 50, 100];
+        $scope.counts = [5, 10, 20, 50, 100];
       })
 
       $scope.GetData = function(Device, count){
@@ -59,7 +59,7 @@
           });
           //check for new devices in db
           $http.get("/getDevices/").then(function(res){
-            dbService.setDevices(res.data.split(",").sort());            
+            dbService.setDevices(res.data.split(",").sort());
             $scope.devices = dbService.getDevices();
           })
       };
