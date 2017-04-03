@@ -9,17 +9,17 @@
 
             // route for the home page
             .when('/', {
-                templateUrl : 'pages/home.html',
+                templateUrl : '/pages/home.html',
                 controller  : 'mainController'
             })
 
             .when('/pregled', {
-              templateUrl : 'pages/pregled.html',
+              templateUrl : '/pages/pregled.html',
               controller  : 'pregledController'
             })
 
             .when('/pit', {
-              templateUrl: 'pages/pit.html',
+              templateUrl: '/pages/pit.html',
               controller : 'pitController'
             });
     });
