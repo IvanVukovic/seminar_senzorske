@@ -4,10 +4,14 @@
       <select ng-options="device for device in devices" ng-model="selectedDevice" ng-change="Graph(selectedDevice, selectedCount)"></select>
       <select ng-options="count for count in counts" ng-model="selectedCount" ng-change="Graph(selectedDevice, selectedCount)"></select>
   </form>
-  {{ info }}
   <!-- <p>{{ data }}</p> -->
+  <input datetime-picker ng-model="model" /><br>
+  <p ng-show="info">{{ info }}</p>
+  Live <input type="checkbox" ng-model="live" ng-true-value="'YES'" ng-false-value="'NO'" ng-init="live='NO'">
 </div>
 <div ng-controller="chartController">
   <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-colors="colours"
     chart-options="options" chart-series="series"></canvas>
+    <br><br>
+
 </div>

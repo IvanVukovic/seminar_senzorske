@@ -1,6 +1,5 @@
 var express = require('express')
 var router = express.Router()
-
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var url ='mongodb://localhost:27017/devices';
@@ -8,7 +7,7 @@ var devices = [];
 
 // middleware that is specific to this router
 router.use(function timeLog (req, res, next) {
-  console.log('Time: ', new Date().toISOString());
+  console.log('Time: ', new Date());
   next()
 })
 
@@ -23,7 +22,7 @@ router.use(function(request, response, next){
 });
 
 router.get('/addValue/', function (req, res) {
-   req.query.date = new Date().toISOString();
+   req.query.date = new Date();
    // Use connect method to connect to the Server
    MongoClient.connect(url, function (err, db) {
      if (err) {
@@ -49,9 +48,28 @@ router.get('/getValues/', function (req, res) {
     } else {
       console.log('Connection established to', url);
       var collection = db.collection(req.query.name);
-      collection.find().sort({$natural: -1}).limit(parseFloat(req.query.count)).toArray(function(err, docs) {
-          res.end(JSON.stringify(docs));
-      });
+
+      if(req.query.live == "on"){
+        collection.find().limit(parseFloat(req.query.count))
+         .sort({$natural: -1})
+          .toArray(function(err, docs) {
+            res.end(JSON.stringify(docs));
+            for(var i = 0; i < docs.length; i ++){
+              console.log(docs[i]);
+            }
+          });
+      }else{
+        collection.find({"date" : {"$gte": new Date(req.query.time)}})
+        //.sort({$natural: -1})
+         .limit(parseFloat(req.query.count))
+           .toArray(function(err, docs) {
+              res.end(JSON.stringify(docs.reverse()));
+              for(var i = 0; i < docs.length; i ++){
+                console.log(docs[i]);
+              }
+            });
+      }
+
       db.close();
     }
   });

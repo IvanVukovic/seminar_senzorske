@@ -1,7 +1,7 @@
 // script.js
 
         // also include ngRoute for all our routing needs
-    var myApp = angular.module('myApp', ['ngRoute', 'chart.js']);
+    var myApp = angular.module('myApp', ['ngRoute', 'chart.js', 'angularjs-datetime-picker']);
 
     // configure our routes
     myApp.config(function($routeProvider) {
@@ -25,60 +25,10 @@
     });
 
     // create the controller and inject Angular's $scope
-    myApp.controller('mainController', function($scope) {
-        // create a message to display in our view
-        $scope.message = 'Everyone come and see how good I look!';
-    });
-
-    myApp.controller('pregledController', function($scope, $http, $interval, graphDataService, dbService) {
-      var promise = undefined;
-      $http.get("/getDevices/").then(function(res){
-        dbService.setDevices(res.data.split(",").sort());
-        $scope.devices = dbService.getDevices();
-        $scope.selectedDevice = $scope.devices[0];
-        $scope.counts = [5, 10, 20, 50, 100];
-      })
-
-      $scope.GetData = function(Device, count){
-          //tribalo bi nacrtat graf
-          $http.get("/getValues/?name=" + Device + "&count=" + count).then(function(response){
-            $scope.data = response.data;
-            if(response.data.length > 0){
-              $scope.info = undefined;
-              var values = [];
-              var timestamp = [];
-              response.data.forEach(function(object){
-                values.push(parseFloat(object.value));
-                timestamp.push(object.date);
-              });
-              graphDataService.setValues(values, timestamp);
-            }
-            else{
-              $scope.info = 'Nema podataka, provjeri upite!';
-            }
-          });
-          //check for new devices in db
-          $http.get("/getDevices/").then(function(res){
-            dbService.setDevices(res.data.split(",").sort());
-            $scope.devices = dbService.getDevices();
-          })
-      };
-
-      $scope.Graph = function(device, count){
-        stopInterval();
-        promise = $interval(function(){$scope.GetData(device, count)}, 2000, false, [device, count]);
-        //sad triba nacrtat
-      }
-
-      var stopInterval = function(){
-        if(angular.isDefined(promise)){
-          $interval.cancel(promise);
-          promise = undefined;
-        }
-      }
-
-      $scope.$on('$destroy', function(){stopInterval();});
-
+    myApp.controller('mainController', function($scope, dbService) {
+      dbService.getDBDevices();
+      // create a message to display in our view
+      $scope.message = 'Everyone come and see how good I look!';
     });
 
     myApp.controller('chartController', function ($scope, $interval, graphDataService) {
@@ -101,8 +51,10 @@
 
       promise = $interval(function () {
         if(angular.isDefined(graphDataService.getValues())){
-          $scope.data = [graphDataService.getValues()[0].reverse()]; //data must be in double array for hover to work
-          $scope.labels = graphDataService.getValues()[1].reverse();
+          if(graphDataService.isLive()){
+            $scope.data = [graphDataService.getValues()[0].reverse()]; //data must be in double array for hover to work
+            $scope.labels = graphDataService.getValues()[1].reverse();
+          }
         }
       }, 3000);
 
