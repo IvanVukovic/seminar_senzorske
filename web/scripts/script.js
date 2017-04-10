@@ -32,7 +32,6 @@
     });
 
     myApp.controller('chartController', function ($scope, $interval, graphDataService) {
-      var promise = undefined;
       $scope.series = ['Series A'];
       $scope.colours = ['#1e90ff', '#3498DB', '#717984', '#F1C40F'];
       $scope.options = {
@@ -49,23 +48,19 @@
         }
       };
 
-      promise = $interval(function () {
+      var setScopeData = function(){
         if(angular.isDefined(graphDataService.getValues())){
           if(graphDataService.isLive()){
             $scope.data = [graphDataService.getValues()[0].reverse()]; //data must be in double array for hover to work
             $scope.labels = graphDataService.getValues()[1].reverse();
           }
         }
-      }, 3000);
-
-      var stopInterval = function(){
-        if(angular.isDefined(promise)){
-          $interval.cancel(promise);
-          promise = undefined;
-        }
       }
+
       $scope.$on('$destroy', function(){
-        stopInterval();
         graphDataService.clear();
       });
+      $scope.$on('graphData',function(){
+        setScopeData();
+      })
     });

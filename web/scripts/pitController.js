@@ -1,6 +1,5 @@
 myApp.controller('pitController',function($scope, $http, dbService){
   dbService.getDBDevices();
-  $scope.devices = dbService.getDevices();
 
   $scope.dropDevice = function(){
     console.log("brisem " + $scope.selectedDevice);

@@ -1,11 +1,11 @@
 <div class="jumbotron text-center" ng-controller="pregledController">
   <h3>Odaberi uređaj i broj podataka:</h3>
   <form>
-      <select ng-options="device for device in devices" ng-model="selectedDevice" ng-change="Graph(selectedDevice, selectedCount)"></select>
-      <select ng-options="count for count in counts" ng-model="selectedCount" ng-change="Graph(selectedDevice, selectedCount)"></select>
+      <select ng-options="device for device in devices" ng-model="selectedDevice" ng-change="Graph()"></select>
+      <select ng-options="count for count in counts" ng-model="selectedCount" ng-change="Graph()"></select>
   </form>
   <!-- <p>{{ data }}</p> -->
-  <input datetime-picker ng-model="model" /><br>
+  <input datetime-picker ng-model="time" /><br>
   <p ng-show="info">{{ info }}</p>
   Live <input type="checkbox" ng-model="live" ng-true-value="'YES'" ng-false-value="'NO'" ng-init="live='NO'">
 </div>

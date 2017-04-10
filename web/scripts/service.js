@@ -1,5 +1,6 @@
 myApp.service('dbService',function($http, $rootScope){
   var devices = [];
+  var data = [];
 
   var setDevices = function(devs){
     devices = devs;
@@ -24,11 +25,32 @@ myApp.service('dbService',function($http, $rootScope){
     });
   }
 
+  var getValuesFromDB = function(Device, count, time){
+    if(time == 0){
+      $http.get("/getValues/?name=" + Device + "&count=" + count + "&live=on")
+       .then(function(response){
+         data = response.data;
+         $rootScope.$broadcast('dataReady');
+       });
+    }else{
+      $http.get("/getValues/?name=" + Device + "&count=" + count + "&time=" + time)
+       .then(function(response){
+          data = response.data;
+          $rootScope.$broadcast('dataReady');
+        });
+    }
+  }
+
+  var getValues = function(){
+    return data;
+  }
   return{
     setDevices: setDevices,
     getDevices: getDevices,
     deleteDevice: deleteDevice,
-    getDBDevices: getDBDevices
+    getDBDevices: getDBDevices,
+    getValuesFromDB: getValuesFromDB,
+    getValues: getValues
   };
 });
 
@@ -49,6 +71,7 @@ myApp.service('graphDataService', function(){
   var clear = function(){
     data = undefined;
   }
+
   var isLive = function(){
     return live;
   }
